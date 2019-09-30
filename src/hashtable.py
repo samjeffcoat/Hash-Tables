@@ -47,14 +47,9 @@ class HashTable:
 
 
     def insert(self, key, value):
-        '''
-        Store the value with the given key.
-
-        Hash collisions should be handled with Linked List Chaining.
-
-        Fill this in.
-        '''
-        pass
+        hashedkey = self._hash_mod(key)
+        self.storage[hashedkey] = LinkedPair(key, value)
+        
 
 
 
@@ -66,7 +61,11 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        hashedkey= self._hash_mod(key)
+        if self.storage[hashedkey] == None:
+            print('Warning')
+        else:
+            self.storage[hashedkey] = None
 
 
     def retrieve(self, key):
