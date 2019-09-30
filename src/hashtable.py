@@ -1,6 +1,9 @@
 # '''
 # Linked List hash table key/value pair
 # '''
+import bcrypt
+import hashlib
+
 class LinkedPair:
     def __init__(self, key, value):
         self.key = key
