@@ -47,13 +47,19 @@ class HashTable:
 
     def insert(self, key, value):
         """hashedkey = self._hash_mod(key)
+        Hash collisions should be handled with linked list chaining
         self.storage[hashedkey] = LinkedPair(key, value)"""
         index = self._hash_mod(key)
 
         if self.storage[index] is not None:
-            print("Warning Index Collision")
+            curr = self.storage[index]
+            while curr.next is not None and curr.key !=key :
+                curr = curr.next 
+            if curr.key == key:
+                curr.value = value
             return
-        self.storage[index] = value
+        else:
+            self.storage[index] = LinkedPair(key, value)
 # """collisions, check to see if key is none, """"
 
     def remove(self, key):
