@@ -1,7 +1,7 @@
 # '''
 # Linked List hash table key/value pair
 # '''
-import bcrypt
+#import bcrypt
 import hashlib
 
 
@@ -46,8 +46,15 @@ class HashTable:
         return self._hash(key) % self.capacity
 
     def insert(self, key, value):
-        hashedkey = self._hash_mod(key)
-        self.storage[hashedkey] = LinkedPair(key, value)
+        """hashedkey = self._hash_mod(key)
+        self.storage[hashedkey] = LinkedPair(key, value)"""
+        index = self._hash_mod(key)
+
+        if self.storage[index] is not None:
+            print("Warning Index Collision")
+            return
+        self.storage[index] = value
+# """collisions, check to see if key is none, """"
 
     def remove(self, key):
         '''
@@ -57,24 +64,27 @@ class HashTable:
 
         Fill this in.
         '''
-        hashedkey = self._hash_mod(key)
-        if self.storage[hashedkey] == None:
-            print('Warning')
-        else:
-            self.storage[hashedkey] = None
+        index = self._hash_mod(key)
 
+        if self.storage[index] is None:
+            print("Warning: Key not found")
+            return
+        self.storage[index] = None
+
+        #hashedkey = self._hash_mod(key)
+        # if self.storage[hashedkey] == None:
+        #   print('Warning')
+        # else:
+        #   self.storage[hashedkey] = None
+# """check insert, similar to the way insert is handled, current and previous pair """"
     def retrieve(self, key):
-        '''
-        Retrieve the value stored with the given key.
+        index = self._hash_mod(key)
+        pair = self.storage[index]
 
-        Returns None if the key is not found.
-
-        Fill this in.
-        '''
-        hashedkey = self._hash_mod(key)
-        if self.storage[hashedkey] == None:
+        if pair is None:
             return None
-        return self.storage[hashedkey].value
+        else:
+            return self.storage[index]
 
     def resize(self):
         '''
@@ -83,11 +93,20 @@ class HashTable:
 
         Fill this in.
         '''
-        self.capacity += 2
+        self.capacity *= 2
+
         new_storage = [None] * self.capacity
-        for i in [item for item in self.storage if item != None]:
-            new_storage[self._hash_mod(i.key)] = LinkedPair(i.key, i.value)
+
+        for pair in self.storage:
+            if pair is not None:
+                new_index = self._hash_mod(pair.key)
+                new_storage[new_index] = pair
+        # for i in [item for item in self.storage if item != None]:
+           # new_storage[self._hash_mod(i.key)] = LinkedPair(i.key, i.value)
         self.storage = new_storage
+# """ multiply capacity by 2 instead of add """"
+
+#"""check up on function above"""
 
 
 if __name__ == "__main__":
@@ -103,6 +122,9 @@ if __name__ == "__main__":
     print(ht.retrieve("line_1"))
     print(ht.retrieve("line_2"))
     print(ht.retrieve("line_3"))
+
+   # (ht.remove("line_3"))
+   # (ht.remove("waffles"))
 
     # Test resizing
     old_capacity = len(ht.storage)
