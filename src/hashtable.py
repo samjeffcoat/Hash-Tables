@@ -53,8 +53,8 @@ class HashTable:
 
         if self.storage[index] is not None:
             curr = self.storage[index]
-            while curr.next is not None and curr.key !=key :
-                curr = curr.next 
+            while curr.next is not None and curr.key != key:
+                curr = curr.next
             if curr.key == key:
                 curr.value = value
             return
@@ -74,8 +74,8 @@ class HashTable:
 
         if self.storage[index] is None:
             print("Warning: Key not found")
-            return
-        self.storage[index] = None
+        else:
+            self.storage[index] = None
 
         #hashedkey = self._hash_mod(key)
         # if self.storage[hashedkey] == None:
@@ -90,7 +90,15 @@ class HashTable:
         if pair is None:
             return None
         else:
-            return self.storage[index]
+            curr = self.storage[index]
+            if curr.key == key:
+                return curr.value
+            while curr is not None:
+                if curr.key == key:
+                    return curr.value
+                else:
+                    curr = curr.next
+            return None
 
     def resize(self):
         '''
